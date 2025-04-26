@@ -15,7 +15,7 @@ void shell_loop() {
     int status = 1;
 
     do {
-        printf("ai-shell> ");
+        printf("mini-shell> ");
         line = read_line();
         args = split_line(line);
         status = execute(args);
