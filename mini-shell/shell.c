@@ -49,25 +49,23 @@ char **split_line(char *line) {
 int execute(char **args) {
     if (args[0] == NULL) return 1;
 
-    // Built-in commands
     if (strcmp(args[0], "exit") == 0) return 0;
     if (strcmp(args[0], "clear") == 0) { system("clear"); return 1; }
     if (strcmp(args[0], "help") == 0) {
-        printf("Mini AI Shell - Built-in Commands:\n");
+        printf("Mini Shell - Built-in Commands:\n");
         printf("  help - Show this message\n");
         printf("  clear - Clear the screen\n");
         printf("  exit - Exit the shell\n");
         return 1;
     }
-
-    // Run external commands
+    
     pid_t pid = fork();
     if (pid == 0) {
         if (execvp(args[0], args) == -1)
             perror("ai-shell");
         exit(EXIT_FAILURE);
     } else if (pid < 0) {
-        perror("ai-shell");
+        perror("mini-shell");
     } else {
         int status;
         waitpid(pid, &status, 0);
