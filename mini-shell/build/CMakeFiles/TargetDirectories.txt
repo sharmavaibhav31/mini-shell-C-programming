@@ -1,0 +1,8 @@
+/home/vaibhav/Documents/C_project/mini-shell/build/CMakeFiles/myshell.dir
+/home/vaibhav/Documents/C_project/mini-shell/build/CMakeFiles/ai_worker.dir
+/home/vaibhav/Documents/C_project/mini-shell/build/CMakeFiles/edit_cache.dir
+/home/vaibhav/Documents/C_project/mini-shell/build/CMakeFiles/rebuild_cache.dir
+/home/vaibhav/Documents/C_project/mini-shell/build/CMakeFiles/list_install_components.dir
+/home/vaibhav/Documents/C_project/mini-shell/build/CMakeFiles/install.dir
+/home/vaibhav/Documents/C_project/mini-shell/build/CMakeFiles/install/local.dir
+/home/vaibhav/Documents/C_project/mini-shell/build/CMakeFiles/install/strip.dir

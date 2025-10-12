@@ -1,0 +1,1 @@
+/usr/bin/cc  -Wall -Wextra -fstack-protector-strong -D_FORTIFY_SOURCE=2  -Wl,-z,relro,-z,now -Wl,--dependency-file=CMakeFiles/ai_worker.dir/link.d CMakeFiles/ai_worker.dir/ai_worker.c.o CMakeFiles/ai_worker.dir/sandbox.c.o CMakeFiles/ai_worker.dir/seccomp_filter.c.o -o ai_worker  /usr/lib/x86_64-linux-gnu/libcap.so
