@@ -1,0 +1,2 @@
+Guys, i had commited a great mistake and that is i deleted everything in my project directory. DO NOT DO THIS MISTAKE. I REPEAT DO NOT USE rm -rf * IN YOUR PROJECT ROOT DIRECTORY. :) REGRETTING THE MISTAKE.
+
