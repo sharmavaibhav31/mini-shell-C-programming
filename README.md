@@ -40,7 +40,11 @@ I’m open to feedback, mentorship, and suggestions from the community to streng
 This work also inspired me to write an article titled   
 “Agents Within the OS: Crafting Permissions for Always-On Memory”,   
 which explores the balance between autonomy, control, and security in operating systems enhanced by AI agents.   
-With this MVP, my goal is to show that AI doesn’t always have to live in the cloud — it can exist securely within our terminals, private, local, and safe by design.  
+With this MVP, my goal is to show that AI doesn’t always have to live in the cloud — it can exist securely within our terminals, private, local, and safe by design.    
+
+Link to Docs: https://drive.google.com/drive/folders/1bONRZUK0zjzxpHoM70sj2O1UjQ9VMGkp?usp=sharing
+
+
 
 ## ✨ Overview
 
@@ -81,7 +85,7 @@ Rlimits — Caps RAM (~2 GB) and CPU time (30 s).
 Namespaces — File system and PID isolation when supported.
 Capability Dropping — Removes unnecessary kernel privileges.
 
-## 🚀 Installation
+##  Installation
 
 ### Prerequisites
 
@@ -154,7 +158,7 @@ See the LICENSE file for details.
 Pull requests and security improvements are welcome!  
 Please open an issue before submitting major changes.  
 
-### 🧩 Acknowledgments
+### Acknowledgments
 llama.cpp — Local LLM inference engine  
 TheBloke — Model provider  
 Inspired by research in secure AI sandboxing and trusted computing  
