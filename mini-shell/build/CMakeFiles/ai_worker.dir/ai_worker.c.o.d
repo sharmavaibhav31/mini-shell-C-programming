@@ -23,7 +23,8 @@ CMakeFiles/ai_worker.dir/ai_worker.c.o: \
  /usr/include/x86_64-linux-gnu/bits/types/cookie_io_functions_t.h \
  /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
  /usr/include/x86_64-linux-gnu/bits/floatn.h \
- /usr/include/x86_64-linux-gnu/bits/floatn-common.h /usr/include/stdlib.h \
+ /usr/include/x86_64-linux-gnu/bits/floatn-common.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio.h /usr/include/stdlib.h \
  /usr/include/x86_64-linux-gnu/bits/waitflags.h \
  /usr/include/x86_64-linux-gnu/bits/waitstatus.h \
  /usr/include/x86_64-linux-gnu/sys/types.h \
@@ -48,6 +49,7 @@ CMakeFiles/ai_worker.dir/ai_worker.c.o: \
  /usr/include/x86_64-linux-gnu/bits/atomic_wide_counter.h \
  /usr/include/x86_64-linux-gnu/bits/struct_mutex.h \
  /usr/include/x86_64-linux-gnu/bits/struct_rwlock.h /usr/include/alloca.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h \
  /usr/include/x86_64-linux-gnu/bits/stdlib-float.h /usr/include/string.h \
  /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h \
@@ -58,4 +60,14 @@ CMakeFiles/ai_worker.dir/ai_worker.c.o: \
  /usr/include/x86_64-linux-gnu/bits/getopt_posix.h \
  /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
  /usr/include/x86_64-linux-gnu/bits/unistd_ext.h \
- /usr/lib/gcc/x86_64-linux-gnu/14/include/stdbool.h
+ /usr/lib/gcc/x86_64-linux-gnu/14/include/stdbool.h \
+ /home/vaibhav/Documents/C_project/mini-shell/llama.cpp/src/../include/llama.h \
+ /home/vaibhav/Documents/C_project/mini-shell/llama.cpp/ggml/src/../include/ggml.h \
+ /usr/lib/gcc/x86_64-linux-gnu/14/include/stdint.h /usr/include/stdint.h \
+ /usr/include/x86_64-linux-gnu/bits/wchar.h \
+ /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h \
+ /usr/include/x86_64-linux-gnu/bits/stdint-least.h \
+ /home/vaibhav/Documents/C_project/mini-shell/llama.cpp/ggml/src/../include/ggml-cpu.h \
+ /home/vaibhav/Documents/C_project/mini-shell/llama.cpp/ggml/src/../include/ggml-backend.h \
+ /home/vaibhav/Documents/C_project/mini-shell/llama.cpp/ggml/src/../include/ggml-alloc.h \
+ /home/vaibhav/Documents/C_project/mini-shell/llama.cpp/ggml/src/../include/ggml-opt.h

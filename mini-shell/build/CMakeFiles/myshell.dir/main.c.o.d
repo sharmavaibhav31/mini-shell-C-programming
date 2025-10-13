@@ -24,6 +24,7 @@ CMakeFiles/myshell.dir/main.c.o: \
  /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
  /usr/include/x86_64-linux-gnu/bits/floatn.h \
  /usr/include/x86_64-linux-gnu/bits/floatn-common.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio.h \
  /home/vaibhav/Documents/C_project/mini-shell/shell.h \
  /usr/lib/gcc/x86_64-linux-gnu/14/include/stdbool.h \
  /usr/include/x86_64-linux-gnu/sys/types.h \

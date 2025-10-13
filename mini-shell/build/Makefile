@@ -187,6 +187,58 @@ ai_worker/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ai_worker.dir/build.make CMakeFiles/ai_worker.dir/build
 .PHONY : ai_worker/fast
 
+#=============================================================================
+# Target rules for targets named ggml-base
+
+# Build rule for target.
+ggml-base: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 ggml-base
+.PHONY : ggml-base
+
+# fast build rule for target.
+ggml-base/fast:
+	$(MAKE) $(MAKESILENT) -f llama.cpp/ggml/src/CMakeFiles/ggml-base.dir/build.make llama.cpp/ggml/src/CMakeFiles/ggml-base.dir/build
+.PHONY : ggml-base/fast
+
+#=============================================================================
+# Target rules for targets named ggml
+
+# Build rule for target.
+ggml: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 ggml
+.PHONY : ggml
+
+# fast build rule for target.
+ggml/fast:
+	$(MAKE) $(MAKESILENT) -f llama.cpp/ggml/src/CMakeFiles/ggml.dir/build.make llama.cpp/ggml/src/CMakeFiles/ggml.dir/build
+.PHONY : ggml/fast
+
+#=============================================================================
+# Target rules for targets named ggml-cpu
+
+# Build rule for target.
+ggml-cpu: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 ggml-cpu
+.PHONY : ggml-cpu
+
+# fast build rule for target.
+ggml-cpu/fast:
+	$(MAKE) $(MAKESILENT) -f llama.cpp/ggml/src/CMakeFiles/ggml-cpu.dir/build.make llama.cpp/ggml/src/CMakeFiles/ggml-cpu.dir/build
+.PHONY : ggml-cpu/fast
+
+#=============================================================================
+# Target rules for targets named llama
+
+# Build rule for target.
+llama: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 llama
+.PHONY : llama
+
+# fast build rule for target.
+llama/fast:
+	$(MAKE) $(MAKESILENT) -f llama.cpp/src/CMakeFiles/llama.dir/build.make llama.cpp/src/CMakeFiles/llama.dir/build
+.PHONY : llama/fast
+
 ai_worker.o: ai_worker.c.o
 .PHONY : ai_worker.o
 
@@ -320,6 +372,10 @@ help:
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
 	@echo "... ai_worker"
+	@echo "... ggml"
+	@echo "... ggml-base"
+	@echo "... ggml-cpu"
+	@echo "... llama"
 	@echo "... myshell"
 	@echo "... ai_worker.o"
 	@echo "... ai_worker.i"

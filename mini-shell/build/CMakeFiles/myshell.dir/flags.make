@@ -6,5 +6,5 @@ C_DEFINES =
 
 C_INCLUDES = 
 
-C_FLAGS =  -Wall -Wextra -fstack-protector-strong -D_FORTIFY_SOURCE=2 -std=gnu11
+C_FLAGS =  -Wall -Wextra -fstack-protector-strong -O3 -DNDEBUG -std=gnu11
 

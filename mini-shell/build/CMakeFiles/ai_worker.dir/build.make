@@ -128,7 +128,11 @@ ai_worker: CMakeFiles/ai_worker.dir/sandbox.c.o
 ai_worker: CMakeFiles/ai_worker.dir/seccomp_filter.c.o
 ai_worker: CMakeFiles/ai_worker.dir/build.make
 ai_worker: CMakeFiles/ai_worker.dir/compiler_depend.ts
+ai_worker: bin/libllama.so
 ai_worker: /usr/lib/x86_64-linux-gnu/libcap.so
+ai_worker: bin/libggml.so
+ai_worker: bin/libggml-cpu.so
+ai_worker: bin/libggml-base.so
 ai_worker: CMakeFiles/ai_worker.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/vaibhav/Documents/C_project/mini-shell/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking C executable ai_worker"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/ai_worker.dir/link.txt --verbose=$(VERBOSE)

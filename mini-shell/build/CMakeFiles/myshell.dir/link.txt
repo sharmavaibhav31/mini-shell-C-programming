@@ -1,1 +1,1 @@
-/usr/bin/cc  -Wall -Wextra -fstack-protector-strong -D_FORTIFY_SOURCE=2  -Wl,-z,relro,-z,now -Wl,--dependency-file=CMakeFiles/myshell.dir/link.d CMakeFiles/myshell.dir/main.c.o CMakeFiles/myshell.dir/shell.c.o -o myshell
+/usr/bin/cc  -Wall -Wextra -fstack-protector-strong -O3 -DNDEBUG -Wl,--dependency-file=CMakeFiles/myshell.dir/link.d CMakeFiles/myshell.dir/main.c.o CMakeFiles/myshell.dir/shell.c.o -o myshell
