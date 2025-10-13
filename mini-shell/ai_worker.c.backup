@@ -9,6 +9,7 @@
 
 extern void apply_sandbox(void);
 
+// Simple echo worker (fallback)
 int echo_worker() {
     char prompt[MAX_PROMPT_LEN];
     
@@ -28,12 +29,15 @@ int echo_worker() {
 #include "llama.h"
 
 int llama_worker(const char *model_path) {
+    // Apply sandbox BEFORE loading model
     apply_sandbox();
     
+    // Initialize llama backend (new API - no arguments)
     llama_backend_init();
     
+    // Load model with new API
     struct llama_model_params model_params = llama_model_default_params();
-    model_params.n_gpu_layers = 0;
+    model_params.n_gpu_layers = 0;  // CPU only
     
     struct llama_model *model = llama_model_load_from_file(model_path, model_params);
     if (!model) {
@@ -41,8 +45,10 @@ int llama_worker(const char *model_path) {
         return 1;
     }
     
+    // Get vocab from model
     const struct llama_vocab *vocab = llama_model_get_vocab(model);
     
+    // Create context with new API
     struct llama_context_params ctx_params = llama_context_default_params();
     ctx_params.n_ctx = 512;
     ctx_params.n_batch = 128;
@@ -55,49 +61,52 @@ int llama_worker(const char *model_path) {
         return 1;
     }
     
+    // Create sampler
     struct llama_sampler_chain_params sampler_params = llama_sampler_chain_default_params();
     struct llama_sampler *sampler = llama_sampler_chain_init(sampler_params);
     llama_sampler_chain_add(sampler, llama_sampler_init_greedy());
     
+    // Main inference loop
     char prompt[MAX_PROMPT_LEN];
     
-    // Main loop - keep processing queries
     while (fgets(prompt, MAX_PROMPT_LEN, stdin)) {
         prompt[strcspn(prompt, "\n")] = '\0';
+        if (strlen(prompt) == 0) continue;
         
-        // Skip empty lines
-        if (strlen(prompt) == 0) {
-            printf("\n");
-            fflush(stdout);
-            continue;
-        }
-        
-        // Tokenize
+        // Tokenize with new API
         int n_prompt_tokens = llama_tokenize(
-            vocab, prompt, strlen(prompt), NULL, 0, true, false
+            vocab,
+            prompt,
+            strlen(prompt),
+            NULL,
+            0,
+            true,   // add_special
+            false   // parse_special
         );
         
-        if (n_prompt_tokens < 0) n_prompt_tokens = -n_prompt_tokens;
-        
-        llama_token *prompt_tokens = malloc(n_prompt_tokens * sizeof(llama_token));
-        if (!prompt_tokens) {
-            fprintf(stderr, "Failed to allocate tokens\n");
-            printf("Error: memory allocation failed\n");
-            fflush(stdout);
-            continue;
+        if (n_prompt_tokens < 0) {
+            n_prompt_tokens = -n_prompt_tokens;
         }
         
-        llama_tokenize(vocab, prompt, strlen(prompt), prompt_tokens, n_prompt_tokens, true, false);
+        llama_token *prompt_tokens = malloc(n_prompt_tokens * sizeof(llama_token));
+        
+        llama_tokenize(
+            vocab,
+            prompt,
+            strlen(prompt),
+            prompt_tokens,
+            n_prompt_tokens,
+            true,
+            false
+        );
         
         // Create batch
         struct llama_batch batch = llama_batch_get_one(prompt_tokens, n_prompt_tokens);
         
-        // Evaluate
+        // Evaluate prompt
         if (llama_decode(ctx, batch) != 0) {
-            fprintf(stderr, "Decode failed\n");
+            fprintf(stderr, "llama_decode failed\n");
             free(prompt_tokens);
-            printf("Error: inference failed\n");
-            fflush(stdout);
             continue;
         }
         
@@ -107,25 +116,33 @@ int llama_worker(const char *model_path) {
         int n_generated = 0;
         
         while (n_generated < 256) {
+            // Sample next token
             llama_token new_token_id = llama_sampler_sample(sampler, ctx, -1);
             
+            // Check for end of generation using new API
             if (llama_vocab_is_eog(vocab, new_token_id)) break;
             
+            // Convert token to text
             char token_buf[16];
-            int token_len = llama_token_to_piece(vocab, new_token_id, token_buf, sizeof(token_buf), 0, false);
+            int token_len = llama_token_to_piece(
+                vocab,
+                new_token_id,
+                token_buf,
+                sizeof(token_buf),
+                0,
+                false
+            );
             
             if (token_len > 0 && response_len + token_len < MAX_RESPONSE_LEN - 1) {
                 memcpy(response + response_len, token_buf, token_len);
                 response_len += token_len;
             }
             
+            // Prepare next batch with single token
             llama_token next_tokens[1] = {new_token_id};
             batch = llama_batch_get_one(next_tokens, 1);
             
-            if (llama_decode(ctx, batch) != 0) {
-                fprintf(stderr, "Decode failed during generation\n");
-                break;
-            }
+            if (llama_decode(ctx, batch) != 0) break;
             
             n_generated++;
         }
@@ -138,8 +155,8 @@ int llama_worker(const char *model_path) {
         
         free(prompt_tokens);
         
-        // Reset sampler for next query
-        llama_sampler_reset(sampler);
+        // Reset KV cache for next query
+        //llama_kv_cache_clear(ctx);
     }
     
     // Cleanup
@@ -157,6 +174,7 @@ int main(int argc, char **argv) {
     bool echo_mode = false;
     const char *model_path = NULL;
     
+    // Parse arguments
     for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "--echo") == 0) {
             echo_mode = true;
@@ -165,11 +183,14 @@ int main(int argc, char **argv) {
         }
     }
     
+    // If echo mode requested, use it
     if (echo_mode) {
+        // Still apply sandbox even in echo mode
         apply_sandbox();
         return echo_worker();
     }
     
+    // Check if model exists
     if (model_path == NULL) {
         fprintf(stderr, "No model path provided, using echo mode\n");
         apply_sandbox();
