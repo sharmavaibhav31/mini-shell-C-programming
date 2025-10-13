@@ -3,6 +3,44 @@
 > A **secure, offline AI assistant** integrated directly into a custom C shell — powered by [`llama.cpp`](https://github.com/ggerganov/llama.cpp) for local inference.
 
 ---
+## 🌱 Project Story
+I started this project around six months ago, soon after switching to Kali Linux. Coming from a different operating system, I found Kali a bit challenging at first — even for basic tasks. Like most developers today, I often relied on ChatGPT and other online resources to learn commands and troubleshoot issues.  
+
+That’s when an idea struck me:  
+
+“If AI assistants can help us with everything online, why can’t we have one that lives inside the terminal itself?”  
+
+Curiosity drove me to explore how an AI could operate directly within the command line, assisting users interactively. But as I dug deeper, I realized that this idea came with serious implications — allowing AI models system-level access could lead to data corruption, privilege escalation, unauthorized command execution, privacy breaches, and critical system instability.  
+Understanding the gravity of these risks made me more determined to approach this responsibly. I began studying how AI agents function inside operating systems, how sandboxing and syscall filtering can protect sensitive operations, and how to build an offline, secure environment for inference.  
+This exploration led to “A Secure Offline AI Assistant” — a project that embeds a local language model within a custom-built shell. The assistant helps users execute, interpret, and learn terminal commands through natural language, while ensuring that no data ever leaves the local system.  
+
+### ⚙️ Tech Stack & Security Architecture  
+The project is built using:  
+C — for system-level programming and shell implementation.  
+CMake — for build automation.  
+llama.cpp — to run the local LLM efficiently on CPU.  
+TinyLlama-1.1B-Chat — for conversational intelligence.  
+Seccomp (Secure Computing Mode) — to restrict dangerous syscalls and sandbox AI execution.  
+This architecture ensures that the assistant operates entirely offline, within a controlled and limited system context, minimizing potential exposure and ensuring safety even at the command-line level.  
+
+### 🧠 How It Works
+Once launched, the shell initializes a secure sandbox where the AI model processes natural language queries locally.  
+For example:  
+
+mini-shell> assist what is recursion  
+The assistant interprets the question and responds conversationally — without accessing the internet or external APIs.  
+All interactions happen within the local memory context, and system calls are strictly filtered through Seccomp to prevent unauthorized operations.  
+
+### 🛡️ Responsible Exploration  
+I’m fully aware that integrating AI into system-level environments is a high-risk domain — one that demands continuous learning and careful design. This project doesn’t claim to solve all the security challenges but is built with privacy, isolation, and safety at its core.  
+I’m eager to learn more about the advanced security mechanisms, kernel-level protections, and safer inference methods that could make such integrations even more robust.  
+I’m open to feedback, mentorship, and suggestions from the community to strengthen this project further — both technically and ethically.  
+
+### Beyond the Code
+This work also inspired me to write an article titled   
+“Agents Within the OS: Crafting Permissions for Always-On Memory”,   
+which explores the balance between autonomy, control, and security in operating systems enhanced by AI agents.   
+With this MVP, my goal is to show that AI doesn’t always have to live in the cloud — it can exist securely within our terminals, private, local, and safe by design.  
 
 ## ✨ Overview
 
