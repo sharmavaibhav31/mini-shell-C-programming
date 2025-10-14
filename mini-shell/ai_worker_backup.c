@@ -43,21 +43,7 @@ int llama_worker(const char *model_path) {
     
     const struct llama_vocab *vocab = llama_model_get_vocab(model);
     
-    // Create context ONCE and reuse it
-    struct llama_context_params ctx_params = llama_context_default_params();
-    ctx_params.n_ctx = 2048;  // Larger context to avoid overflow
-    ctx_params.n_batch = 128;
-    ctx_params.n_threads = 2;
-    
-    struct llama_context *ctx = llama_init_from_model(model, ctx_params);
-    if (!ctx) {
-        llama_model_free(model);
-        fprintf(stderr, "Failed to create context\n");
-        return 1;
-    }
-    
     char prompt[MAX_PROMPT_LEN];
-    int total_tokens = 0;  // Track context usage
     
     while (fgets(prompt, MAX_PROMPT_LEN, stdin)) {
         prompt[strcspn(prompt, "\n")] = '\0';
@@ -68,9 +54,18 @@ int llama_worker(const char *model_path) {
             continue;
         }
         
-        // If context is getting full, just note it
-        if (total_tokens > 1800) {
-            fprintf(stderr, "Warning: context nearly full, responses may degrade\n");
+        // Create fresh context for each query
+        struct llama_context_params ctx_params = llama_context_default_params();
+        ctx_params.n_ctx = 512;
+        ctx_params.n_batch = 128;
+        ctx_params.n_threads = 2;
+        
+        struct llama_context *ctx = llama_init_from_model(model, ctx_params);
+        if (!ctx) {
+            fprintf(stderr, "Failed to create context\n");
+            printf("Error: context creation failed\n");
+            fflush(stdout);
+            continue;
         }
         
         // Create sampler for this query
@@ -91,6 +86,7 @@ int llama_worker(const char *model_path) {
             printf("Error: memory allocation failed\n");
             fflush(stdout);
             llama_sampler_free(sampler);
+            llama_free(ctx);
             continue;
         }
         
@@ -106,17 +102,16 @@ int llama_worker(const char *model_path) {
             printf("Error: inference failed\n");
             fflush(stdout);
             llama_sampler_free(sampler);
+            llama_free(ctx);
             continue;
         }
-        
-        total_tokens += n_prompt_tokens;
         
         // Generate response
         char response[MAX_RESPONSE_LEN] = {0};
         int response_len = 0;
         int n_generated = 0;
         
-        while (n_generated < 100) {  // Shorter responses
+        while (n_generated < 256) {
             llama_token new_token_id = llama_sampler_sample(sampler, ctx, -1);
             
             if (llama_vocab_is_eog(vocab, new_token_id)) break;
@@ -140,20 +135,19 @@ int llama_worker(const char *model_path) {
             n_generated++;
         }
         
-        total_tokens += n_generated;
         response[response_len] = '\0';
         
         // Output response
         printf("%s\n", response);
         fflush(stdout);
         
-        // Cleanup
+        // Cleanup for this query
         free(prompt_tokens);
         llama_sampler_free(sampler);
+        llama_free(ctx);
     }
     
     // Final cleanup
-    llama_free(ctx);
     llama_model_free(model);
     llama_backend_free();
     
