@@ -1,236 +1,156 @@
-# 🧠 Offline AI Assistant Shell
-
+# 🧠 Offline AI Assistant Shell  
 > A **secure, offline AI assistant** integrated directly into a custom C shell — powered by [`llama.cpp`](https://github.com/ggerganov/llama.cpp) for local inference.
 
 ---
-## 🌱 Project Story
-I started this project around six months ago, soon after switching to Kali Linux. Coming from a different operating system, I found Kali a bit challenging at first — even for basic tasks. Like most developers today, I often relied on ChatGPT and other online resources to learn commands and troubleshoot issues.  
 
-That’s when an idea struck me:  
+## 🌱 Project Story  
 
-“If AI assistants can help us with everything online, why can’t we have one that lives inside the terminal itself?”  
+Around six months ago — I began working on something similar to the Gemini CLI agent but with a different philosophy.  
 
-Curiosity drove me to explore how an AI could operate directly within the command line, assisting users interactively. But as I dug deeper, I realized that this idea came with serious implications — allowing AI models system-level access could lead to data corruption, privilege escalation, unauthorized command execution, privacy breaches, and critical system instability.  
+After switching to **Kali Linux**, I found even simple tasks challenging at first. Like most developers, I often relied on ChatGPT or online resources for help. Then a thought struck me:  
 
-Understanding the gravity of these risks made me more determined to approach this responsibly. I began studying how AI agents function inside operating systems, how sandboxing and syscall filtering can protect sensitive operations, and how to build an offline, secure environment for inference.  🌱 Project Story
-Around six months ago, around the same time Google introduced its Gemini CLI - I began working on something similar, but with a different philosophy.
+> “If AI assistants can guide us everywhere online, why can’t one live inside the terminal itself?”  
 
-I had just switched to kali Linux, and as someone coming from a different operating system, I found it challenging at first—even for basic tasks. Like most developers, I often relied on ChatGPT and other online tools to learn commands, debug issues, and experiment with scripts.
+That question led me to explore how an AI model could safely assist users within a **command-line environment**. I quickly realized this came with serious risks — from **data corruption** and **privilege escalation** to **privacy breaches** and **system compromise**.  
 
-That’s when a thought struck me: “If AI assistants can guide us everywhere online, why can’t one live inside the terminal itself?”
+Instead of abandoning the idea, I decided to design it **responsibly**, focusing on **security-first principles**:  
+- Studying **AI agent behavior** inside operating systems  
+- Implementing **sandboxing** and **syscall filtering (Seccomp)**  
+- Ensuring **fully offline**, **local inference** for data privacy  
 
-This idea felt simple yet powerful, but it also came with serious implications. Allowing an AI model direct access to the system-level command line could result in data corruption, privilege escalation, unauthorized command execution, privacy breaches, or even full system compromise if not handled securely.Rather than abandoning the idea, I decided to design it responsibly. 
-I began studying how AI agents function inside operating systems, how sandboxing, syscall filtering (Seccomp), and capability dropping can protect system integrity, and how local inference can make AI private and offline.
+---
+---
 
-This exploration evolved into my project:
-🧠 “A Secure Offline AI Assistant”, an AI-powered command-line shell that runs entirely offline, safely embedded within the OS.
+## 📺 Demo Video
 
-⚙️ Tech Stack & Security Architecture
-🧩 C:  for low-level control and shell implementation
-⚙️ CMake: for structured build automation
-🧠 llama.cpp: for efficient CPU-based local inference
-💬 TinyLlama-1.1B-Chat: lightweight conversational model
-🔒 Seccomp (Secure Computing Mode): for syscall whitelisting and process sandboxing
+Check out a quick demonstration of the offline AI assistant in action.
 
-This architecture ensures that the assistant runs entirely offline within a restricted environment. It cannot access or modify the system beyond its intended limits, minimizing risk and ensuring privacy at the OS level.
-
-🛡️ Responsible Exploration
-I’m fully aware that integrating AI directly into system environments is a high-risk domain, and it must be handled with extreme care.
-This project doesn’t claim to solve every challenge in secure AI integration, but it demonstrates that AI can exist locally, safely, and transparently when designed with security-first principles.
-
-I’m eager to keep learning, especially at the intersection of Machine Learning and Cybersecurity, exploring how kernel-level protections, capability isolation, and safer inference mechanisms can make AI-driven systems more secure, private, and resilient by design. And I’m open to mentorship, feedback, or collaboration from anyone interested in making system-level AI more secure.
-
-🧩 Beyond the Code
-This project also inspired me to write an article titled
-“Agents Within the OS: Crafting Permissions for Always-On Memory”,
-where I explored how operating systems can balance autonomy, control, and safety when integrated with AI agents.
-With this MVP, I wanted to prove one thing:
-AI doesn’t always have to live in the cloud. It can exist right inside our terminals — private, offline, and safe by design. 
-
-
-This exploration led to “A Secure Offline AI Assistant” — a project that embeds a local language model within a custom-built shell. The assistant helps users execute, interpret, and learn terminal commands through natural language, while ensuring that no data ever leaves the local system.  
-
-### ⚙️ Tech Stack & Security Architecture  
-The project is built using:  
-C — for system-level programming and shell implementation.    
-CMake — for build automation.    
-llama.cpp — to run the local LLM efficiently on CPU.    
-TinyLlama-1.1B-Chat — for conversational intelligence.    
-Seccomp (Secure Computing Mode) — to restrict dangerous syscalls and sandbox AI execution.      
-This architecture ensures that the assistant operates entirely offline, within a controlled and limited system context, minimizing potential exposure and ensuring safety even at the command-line level.  
-
-### 🧠 How It Works
-Once launched, the shell initializes a secure sandbox where the AI model processes natural language queries locally.  
-For example:  
-
-mini-shell> assist what is recursion  
-The assistant interprets the question and responds conversationally — without accessing the internet or external APIs.  
-All interactions happen within the local memory context, and system calls are strictly filtered through Seccomp to prevent unauthorized operations.  
-
-### 🛡️ Responsible Exploration  
-I’m fully aware that integrating AI into system-level environments is a high-risk domain — one that demands continuous learning and careful design. This project doesn’t claim to solve all the security challenges but is built with privacy, isolation, and safety at its core.  🌱 Project Story
-Around six months ago, around the same time Google introduced its Gemini CLI - I began working on something similar, but with a different philosophy.
-
-I had just switched to kali Linux, and as someone coming from a different operating system, I found it challenging at first—even for basic tasks. Like most developers, I often relied on ChatGPT and other online tools to learn commands, debug issues, and experiment with scripts.
-
-That’s when a thought struck me: “If AI assistants can guide us everywhere online, why can’t one live inside the terminal itself?”
-
-This idea felt simple yet powerful, but it also came with serious implications. Allowing an AI model direct access to the system-level command line could result in data corruption, privilege escalation, unauthorized command execution, privacy breaches, or even full system compromise if not handled securely.Rather than abandoning the idea, I decided to design it responsibly. 
-I began studying how AI agents function inside operating systems, how sandboxing, syscall filtering (Seccomp), and capability dropping can protect system integrity, and how local inference can make AI private and offline.
-
-This exploration evolved into my project:
-🧠 “A Secure Offline AI Assistant”, an AI-powered command-line shell that runs entirely offline, safely embedded within the OS.
-
-⚙️ Tech Stack & Security Architecture
-🧩 C:  for low-level control and shell implementation
-⚙️ CMake: for structured build automation
-🧠 llama.cpp: for efficient CPU-based local inference
-💬 TinyLlama-1.1B-Chat: lightweight conversational model
-🔒 Seccomp (Secure Computing Mode): for syscall whitelisting and process sandboxing
-
-This architecture ensures that the assistant runs entirely offline within a restricted environment. It cannot access or modify the system beyond its intended limits, minimizing risk and ensuring privacy at the OS level.
-
-🛡️ Responsible Exploration
-I’m fully aware that integrating AI directly into system environments is a high-risk domain, and it must be handled with extreme care.
-This project doesn’t claim to solve every challenge in secure AI integration, but it demonstrates that AI can exist locally, safely, and transparently when designed with security-first principles.
-
-I’m eager to keep learning, especially at the intersection of Machine Learning and Cybersecurity, exploring how kernel-level protections, capability isolation, and safer inference mechanisms can make AI-driven systems more secure, private, and resilient by design. And I’m open to mentorship, feedback, or collaboration from anyone interested in making system-level AI more secure.
-
-🧩 Beyond the Code
-This project also inspired me to write an article titled
-“Agents Within the OS: Crafting Permissions for Always-On Memory”,
-where I explored how operating systems can balance autonomy, control, and safety when integrated with AI agents.
-With this MVP, I wanted to prove one thing:  
-AI doesn’t always have to live in the cloud. It can exist right inside our terminals — private, offline, and safe by design. 
-  
-I’m eager to learn more about the advanced security mechanisms, kernel-level protections, and safer inference methods that could make such integrations even more robust.    
-I’m open to feedback, mentorship, and suggestions from the community to strengthen this project further — both technically and ethically.    
-
-### Beyond the Code
-This work also inspired me to write an article titled   
-“Agents Within the OS: Crafting Permissions for Always-On Memory”,   
-which explores the balance between autonomy, control, and security in operating systems enhanced by AI agents.   
-With this MVP, my goal is to show that AI doesn’t always have to live in the cloud — it can exist securely within our terminals, private, local, and safe by design.    
-
-Link to Docs: https://drive.google.com/drive/folders/1bONRZUK0zjzxpHoM70sj2O1UjQ9VMGkp?usp=sharing
-
-
-
-## ✨ Overview
-
-The **Offline AI Assistant Shell** is a C-based shell environment enhanced with an integrated **local AI assistant**.  
-It runs **entirely offline**, ensuring **data privacy**, **sandboxed execution**, and **system-level security**.
+[![Watch the Demo: Offline AI Assistant Shell](https://img.youtube.com/vi/nCAE7SovqPM/maxresdefault.jpg)](https://www.youtube.com/watch?v=nCAE7SovqPM)
 
 ---
 
-## ⚙️ Features
+## ⚙️ Tech Stack & Security Architecture  
 
- **Offline Operation** — No internet, no APIs, full privacy.  
- **Secure Sandboxing** — Multiple layers of protection for safe inference.  
- **Graceful Fallback** — Reverts to echo mode if the model is missing.  
- **Timeout Protection** — Automatically terminates slow AI tasks.  
- **Reset Command** — Restart the AI worker safely anytime.  
+| Component | Purpose |
+|------------|----------|
+| **C** | System-level shell implementation |
+| **CMake** | Build automation |
+| **llama.cpp** | Efficient local inference on CPU |
+| **TinyLlama-1.1B-Chat** | Lightweight conversational LLM |
+| **Seccomp (Secure Computing Mode)** | Syscall filtering and sandboxing |
+
+This architecture ensures the assistant operates **entirely offline**, in a **restricted and isolated** environment — minimizing system exposure while preserving performance and privacy.
 
 ---
 
-## 🔐 Security Architecture
+## 🧠 How It Works  
 
-The assistant is **architected for isolation** — separating the trusted shell process from the sandboxed AI worker.
+Once launched, the shell initializes a **sandboxed AI worker** that processes natural language queries locally.  
 
-| Component | Role | Isolation Mechanisms |
-|------------|------|----------------------|
-| **Shell Process (`myshell`)** | Trusted interface. Handles parsing, I/O, and AI worker management. | — |
-| **AI Worker (`ai_worker`)** | Sandboxed process for model inference. | `Seccomp`, `Rlimits`, `Namespaces`, Capability Dropping |
+mini-shell> assist what is recursion
+The assistant interprets your question, generates a conversational response, and displays it — without internet access or external APIs.
+Every system call is filtered through Seccomp, preventing unsafe or unauthorized operations.
 
-graph TD
-    A[Shell Process (Trusted)] -->|fork() + Pipes| B(AI Worker - Sandboxed)
-    B --> C[Load Model (Read-Only)]
-    B --> D[Apply Seccomp Filter]
-    B --> E[Drop Capabilities]
-    B --> F[Set Resource Limits]
+### 🔐 Security Design
+Layer	Mechanism	Purpose   
+Seccomp	Syscall whitelist	Restrict risky system operations   
+Rlimits	Resource caps	Limit CPU & memory usage    
+Namespaces	Process & FS isolation	Contain execution context   
+Capability Dropping	Kernel privilege reduction	Prevent escalations   
 
-Isolation Layers
-Seccomp (syscall whitelist) — Only necessary system calls allowed.
-Rlimits — Caps RAM (~2 GB) and CPU time (30 s).
-Namespaces — File system and PID isolation when supported.
-Capability Dropping — Removes unnecessary kernel privileges.
+These combined mechanisms ensure strong process isolation, privacy, and fail-safe execution.
 
-##  Installation
+⚡ Installation
+🧩 Prerequisites
+sudo apt-get install build-essential cmake libcap-dev valgrind  
 
-### Prerequisites
+1️⃣ Clone & Build llama.cpp
 
-### Install required dependencies:
-
-sudo apt-get install build-essential cmake libcap-dev valgrind
-
-### 1️⃣ Clone & Build llama.cpp
-
-cd ~  
+cd ~   
 git clone https://github.com/ggerganov/llama.cpp.git  
 cd llama.cpp  
 rm -rf build && mkdir build && cd build  
 cmake .. -DBUILD_SHARED_LIBS=OFF  
 make llama -j$(nproc)  
+  
 
-
-### 2️⃣ Download Model
+2️⃣ Download Model
 
 mkdir -p ~/.assist_ai  
 cd ~/.assist_ai  
 wget https://huggingface.co/TheBloke/TinyLlama-1.1B-Chat-v1.0-GGUF/resolve/main/tinyllama-1.1b-chat-v1.0.Q4_K_M.gguf -O model.gguf  
 md5sum model.gguf > model.md5  
 
-### 3️⃣ Build the Shell Project
 
-cd ~/Documents/C_project/mini-shell  
-mkdir build && cd build  
-cmake ..  
-make -j$(nproc)  
+3️⃣ Build the Shell
 
-### 💡 Usage
-Run the compiled shell executable:  
-./myshell  
+cd ~/Documents/C_project/mini-shell    
+mkdir build && cd build    
+cmake ..    
+make -j$(nproc)    
+
+
+💡 Usage
 Action	Command  
-Ask the AI assistant	mini-shell> assist what is recursion  
+Run shell	./myshell  
+Ask the AI assistant	mini-shell> assist what is recursion 
 Reset the AI worker	mini-shell> assist-reset  
 Exit the shell	mini-shell> exit  
 
-### 🧪 Testing
-Test	Command	Description  
-Run test suite	./test_assist.sh	Automated functional testing  
-Verify model integrity	./verify_model.sh	Confirms MD5 hash  
-Stress test	./stress_test.sh	Load and stability testing  
-Security audit	strace -f ./myshell	Check Seccomp syscall filtering  
 
-### ⚠️ Troubleshooting
-Problem	Possible Cause Solution  
-Worker fails to start	Missing model file Ensure ~/.assist_ai/model.gguf exists  
-Timeout errors	Context too large	Reduce n_ctx or use a smaller model  
-Namespace errors	Unsupported kernel feature	Shell auto-fallback will disable isolation  
-Seccomp kills worker	Missing allowed syscall	Update whitelist in seccomp_filter.c  
+🧪 Testing  
 
-### 📊 Performance (CPU-Only)
-Metric	Value	Notes  
-First query time	~2–3 s	Includes model loading  
-Subsequent queries	~1–2 s	Reuses context  
-Memory usage	~1–1.5 GB	Depends on model size  
-Token generation	10–20 tokens/s	CPU-dependent  
+| Test	| Command	 | Purpose | 
+|------------|----------|------------|
+| Run test suite	| ./test_assist.sh	| Functional testing |  
+| Verify model integrity	| ./verify_model.sh	| MD5 hash check |  
+| Stress test |	./stress_test.sh |	Load/stability validation  |
+| Security audit	| strace -f ./myshell	| Syscall inspection  |
 
-### 🛡️ Design Philosophy
+⚠️ Troubleshooting
+| Problem	| Possible Cause | Solution |
+|------------|----------|--------------|
+| Worker fails to start	|                             Missing model file	        |                  Ensure ~/.assist_ai/model.gguf exists |
+| Timeout errors	        |                           Context too large	             |             Reduce n_ctx or use smaller model |
+| Namespace errors	       |                          Kernel limitations	            |              Fallback disables isolation |
+| Seccomp kills worker	   |                          Blocked syscall	                |            Update seccomp_filter.c whitelist |
+
+
+📊 Performance (CPU-Only)
+| Metric | Value | Notes |
+|------------|----------|--------------|
+| First query | ~2–3 s | Includes model load time |
+| Subsequent queries | ~1–2 s | Reuses context |
+| Memory usage | ~1–1.5 GB | Depends on model |
+| Token speed |10–20 tokens/s | CPU-dependent |
+
+
+🧩 Future Scope
+This project represents an early exploration into secure, agentic AI at the system level.
+In the next phase, I aim to:
+
+🔁 Fine-tune the AI assistant for contextual awareness and adaptive command guidance  
+🧠 Transform the shell into an agentic CLI, capable of decision-making within secure bounds  
+🧩 Collaborate with mentors or security experts to enhance kernel-level safety and inference reliability  
+🔒 Explore reinforcement-based task execution within isolated sandboxes  
+
+I believe the fusion of Machine Learning and Cybersecurity can define the next generation of secure AI agents, and this project is my step toward that direction.
+
+🛡️ Design Philosophy
 “Local intelligence should be private, safe, and performant.”  
-This project shows how AI inference can be embedded directly into system-level utilities while maintaining offline operation and secure sandboxing — suitable for embedded, defense, and research systems.  
+This shell demonstrates how AI inference can be embedded directly into system utilities while preserving offline privacy and integrity — valuable for embedded, defense, and research systems.  
 
-### 📜 License
-This project is licensed under the MIT License.  
-See the LICENSE file for details.  
 
-### 🤝 Contributing
-Pull requests and security improvements are welcome!  
+📜 License
+Licensed under the MIT License — see the LICENSE file for details.  
+
+🤝 Contributing  
+Contributions and security improvements are welcome!  
 Please open an issue before submitting major changes.  
 
-### Acknowledgments
-llama.cpp — Local LLM inference engine  
-TheBloke — Model provider  
-Inspired by research in secure AI sandboxing and trusted computing  
+🙏 Acknowledgments  
+llama.cpp — Local LLM engine  
+TheBloke — Model provider    
+Research inspirations from secure AI sandboxing and trusted computing  
 
-<p align="center"> <sub>🧠 Built for privacy. Designed for performance. Secured by sandboxing.</sub> </p>
+<p align="center"><sub>🧠 Built for privacy. Designed for performance. Secured by sandboxing.</sub></p> 
