@@ -1,106 +1,118 @@
-# Offline AI Assistant Shell
+## ✨ Overview
 
-A secure, offline AI assistant integrated into a custom C shell using llama.cpp for local inference.
+The **Offline AI Assistant Shell** is a C-based shell environment enhanced with an integrated **local AI assistant**.  
+It runs **entirely offline**, ensuring **data privacy**, **sandboxed execution**, and **system-level security**.
 
-## Features
+---
 
-- **Offline Operation**: All AI inference runs locally, no network required
-- **Secure Sandboxing**: AI worker runs in isolated process with:
-  - Seccomp syscall whitelist
-  - Resource limits (2GB RAM, 30s CPU)
-  - Namespace isolation (when available)
-  - Capability dropping
-- **Fallback Mode**: Graceful degradation to echo mode if model unavailable
-- **Timeout Protection**: 30-second timeout prevents hanging
-- **Worker Reset**: `assist-reset` command to restart AI worker
+## ⚙️ Features
 
-## Installation
+ **Offline Operation** — No internet, no APIs, full privacy.  
+ **Secure Sandboxing** — Multiple layers of protection for safe inference.  
+ **Graceful Fallback** — Reverts to echo mode if the model is missing.  
+ **Timeout Protection** — Automatically terminates slow AI tasks.  
+ **Reset Command** — Restart the AI worker safely anytime.  
+
+---
+
+## 🔐 Security Architecture
+
+The assistant is **architected for isolation** — separating the trusted shell process from the sandboxed AI worker.
+
+| Component | Role | Isolation Mechanisms |
+|------------|------|----------------------|
+| **Shell Process (`myshell`)** | Trusted interface. Handles parsing, I/O, and AI worker management. | — |
+| **AI Worker (`ai_worker`)** | Sandboxed process for model inference. | `Seccomp`, `Rlimits`, `Namespaces`, Capability Dropping |
+
+graph TD
+    A[Shell Process (Trusted)] -->|fork() + Pipes| B(AI Worker - Sandboxed)
+    B --> C[Load Model (Read-Only)]
+    B --> D[Apply Seccomp Filter]
+    B --> E[Drop Capabilities]
+    B --> F[Set Resource Limits]
+
+Isolation Layers
+Seccomp (syscall whitelist) — Only necessary system calls allowed.
+Rlimits — Caps RAM (~2 GB) and CPU time (30 s).
+Namespaces — File system and PID isolation when supported.
+Capability Dropping — Removes unnecessary kernel privileges.
+
+##  Installation
 
 ### Prerequisites
-```bash
+
+### Install required dependencies:
+
 sudo apt-get install build-essential cmake libcap-dev valgrind
 
+### 1️⃣ Clone & Build llama.cpp
 
-# Build
-# Clone and build llama.cpp
-cd ~
-git clone https://github.com/ggerganov/llama.cpp.git
-cd llama.cpp
-make libllama.a -j$(nproc)
-
-# Download model
-mkdir -p ~/.assist_ai
-cd ~/.assist_ai
-wget https://huggingface.co/TheBloke/TinyLlama-1.1B-Chat-v1.0-GGUF/resolve/main/tinyllama-1.1b-chat-v1.0.Q4_K_M.gguf -O model.gguf
-md5sum model.gguf > model.md5
-
-# Build shell
-cd ~/your-shell-project
-mkdir build && cd build
-cmake -DLLAMA_CPP_DIR=$HOME/llama.cpp ..
-make -j$(nproc)
-
-# Usage
-./myshell
-
-## Ask AI assistant
-mini-shell> assist what is recursion
-
-## Reset worker if needed
-mini-shell> assist-reset
-
-## Exit
-mini-shell> exit
+cd ~  
+git clone https://github.com/ggerganov/llama.cpp.git  
+cd llama.cpp  
+rm -rf build && mkdir build && cd build  
+cmake .. -DBUILD_SHARED_LIBS=OFF  
+make llama -j$(nproc)  
 
 
-# Security Architecture
-┌─────────────────────────────────────┐
-│  Shell Process (Trusted)            │
-│  - Command parsing                  │
-│  - User interaction                 │
-└──────────┬──────────────────────────┘
-           │ fork() + pipes
-           ▼
-┌─────────────────────────────────────┐
-│  AI Worker (Sandboxed)              │
-│  - Namespaces: CLONE_NEWNS|NEWPID   │
-│  - Seccomp: whitelist only          │
-│  - Rlimits: 2GB RAM, 30s CPU        │
-│  - Capabilities: dropped            │
-│  - Model: read-only access          │
-└─────────────────────────────────────┘
+### 2️⃣ Download Model
 
-# Testing
-## Run test suite
-./test_assist.sh
+mkdir -p ~/.assist_ai  
+cd ~/.assist_ai  
+wget https://huggingface.co/TheBloke/TinyLlama-1.1B-Chat-v1.0-GGUF/resolve/main/tinyllama-1.1b-chat-v1.0.Q4_K_M.gguf -O model.gguf  
+md5sum model.gguf > model.md5  
 
-## Verify model integrity
-./verify_model.sh
+### 3️⃣ Build the Shell Project
 
-## Stress test
-./stress_test.sh
+cd ~/Documents/C_project/mini-shell  
+mkdir build && cd build  
+cmake ..  
+make -j$(nproc)  
 
-## Security audit
-strace -f ./myshell
+### 💡 Usage
+Run the compiled shell executable:  
+./myshell  
+Action	Command  
+Ask the AI assistant	mini-shell> assist what is recursion  
+Reset the AI worker	mini-shell> assist-reset  
+Exit the shell	mini-shell> exit  
 
+### 🧪 Testing
+Test	Command	Description  
+Run test suite	./test_assist.sh	Automated functional testing  
+Verify model integrity	./verify_model.sh	Confirms MD5 hash  
+Stress test	./stress_test.sh	Load and stability testing  
+Security audit	strace -f ./myshell	Check Seccomp syscall filtering  
 
+### ⚠️ Troubleshooting
+Problem	Possible Cause Solution  
+Worker fails to start	Missing model file Ensure ~/.assist_ai/model.gguf exists  
+Timeout errors	Context too large	Reduce n_ctx or use a smaller model  
+Namespace errors	Unsupported kernel feature	Shell auto-fallback will disable isolation  
+Seccomp kills worker	Missing allowed syscall	Update whitelist in seccomp_filter.c  
 
-# Troubleshooting
-### Worker fails to start: Check that model file exists at ~/.assist_ai/model.gguf
-### Timeout errors: Reduce context size or use smaller model
-### Namespace errors: Run without namespace isolation (automatically falls back)
-### Seccomp kills worker: Review whitelisted syscalls in seccomp_filter.c
+### 📊 Performance (CPU-Only)
+Metric	Value	Notes  
+First query time	~2–3 s	Includes model loading  
+Subsequent queries	~1–2 s	Reuses context  
+Memory usage	~1–1.5 GB	Depends on model size  
+Token generation	10–20 tokens/s	CPU-dependent  
 
-## Performance
-### First query: ~2-3s (includes model loading)
-### Subsequent queries: ~1-2s (context reused)
-### Memory usage: ~1-1.5GB
-### Token generation: 10-20 tokens/second (CPU-only)
+### 🛡️ Design Philosophy
+“Local intelligence should be private, safe, and performant.”  
+This project shows how AI inference can be embedded directly into system-level utilities while maintaining offline operation and secure sandboxing — suitable for embedded, defense, and research systems.  
 
-# License
-## MIT
+### 📜 License
+This project is licensed under the MIT License.  
+See the LICENSE file for details.  
 
+### 🤝 Contributing
+Pull requests and security improvements are welcome!  
+Please open an issue before submitting major changes.  
 
+### Acknowledgments
+llama.cpp — Local LLM inference engine  
+TheBloke — Model provider  
+Inspired by research in secure AI sandboxing and trusted computing  
 
-
-
+<p align="center"> <sub>🧠 Built for privacy. Designed for performance. Secured by sandboxing.</sub> </p>
